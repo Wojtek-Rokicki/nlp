@@ -55,7 +55,7 @@ def load_bbc_news(data_root):
             texts.append(row['text']), labels.append(row['category'])
     return texts, labels
 
-
+# https://nlp.stanford.edu/projects/glove/
 def load_glove_embedding_vec(data_root, dim):
     embedding_index = dict()
     with open(os.path.join(data_root, f"glove/glove.6B.{dim}d.txt")) as f:
