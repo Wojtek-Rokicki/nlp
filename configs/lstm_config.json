@@ -1,8 +1,10 @@
 {
   "dataset": [
-    "BBC_news",
-    "SpamSMS",
-    "DisasterTweets"
+    "sms_spam",
+    "disaster_tweets",
+    "emotions",
+    "imdb",
+    "bbc"
   ],
   "sequence_length": [
     50,

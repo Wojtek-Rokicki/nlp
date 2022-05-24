@@ -160,7 +160,7 @@ def get_preprocessed_dataloaders(dataset):
         'politics':4
     }
 
-    df = pd.read_csv('./data/bbc/bbc-text.csv')
+    df = pd.read_csv('./data/datasets/bbc/bbc_articles.csv')
 
     np.random.seed(112)
     df_train, df_val, df_test = np.split(df.sample(frac=1, random_state=42), # mixes df and divides 0.8 0.1 0.1 

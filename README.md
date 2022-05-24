@@ -16,14 +16,13 @@ Resources for implementation:
 ## TODO:
 - [x] Get familiar with the code!
 - [x] Test and run LSTM
-- [ ] In [data_loading.py](src/data_loading.py) add loaders for datasets
-- [ ] Run LSTM on new dataset
+- [ ] Add loaders for all datasets
 - [x] Implement BERT
-- [x] Run BERT on new dataset
-- [ ] Modify BERT
+- [x] Test and run BERT
+- [ ] Code evaluation for BERT
+- [ ] Compare models
 - [ ] Refactor code
 - [ ] Make argparse for LSTM, Roberta, BERT
-- [ ] ...
 
 # Notes:
 ## Prerequisities:
