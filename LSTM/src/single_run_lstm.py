@@ -9,7 +9,7 @@ from src.data_loading import load_data
 from src.test import test
 from src.train import train
 from src.utils import Selector, get_model, get_embedding_vectors, prepare_data_loaders_and_tokenizer, \
-    add_parameters_to_test_results
+    add_parameters_to_test_results, count_parameters
 
 
 def single_run_lstm(params, embeddings):
@@ -31,6 +31,8 @@ def single_run_lstm(params, embeddings):
 
         model = get_model(Selector(model_idx), vocab_size, output_size, embedding_matrix, params['embedding_size'],
                           params['hidden_dim'], device, params['drop_prob'], tokenizer, params['sequence_length'])
+        no_params = count_parameters(model)
+        logging.info(f"model has {no_params} trainable parameters")
         criterion, optimizer = nn.CrossEntropyLoss(), torch.optim.Adam(model.parameters(), lr=params['learning_rate'])
 
         train_stats = \

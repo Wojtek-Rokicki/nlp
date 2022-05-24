@@ -10,7 +10,7 @@ from transformers import BertModel
 
 from tqdm import tqdm
 
-tokenizer = BertTokenizer.from_pretrained('distilbert-base-cased') # Maybe array for different BERTs
+tokenizer = BertTokenizer.from_pretrained('bert-base-cased') # Maybe array for different BERTs
 
 labels={
     'business':0,
@@ -19,10 +19,6 @@ labels={
     'tech':3,
     'politics':4
 }
-
-example_text = 'I will watch Memento tonight'
-bert_input = tokenizer(example_text,padding='max_length', max_length = 10, 
-                       truncation=True, return_tensors="pt")
 
 df = pd.read_csv('../LSTM/data/bbc/bbc-text.csv')
 
@@ -68,7 +64,7 @@ class BertClassifier(nn.Module):
 
         super(BertClassifier, self).__init__()
 
-        self.bert = BertModel.from_pretrained('distilbert-base-cased')
+        self.bert = BertModel.from_pretrained('bert-base-cased')
         self.dropout = nn.Dropout(dropout)
         self.linear = nn.Linear(768, 5)
         self.relu = nn.ReLU()

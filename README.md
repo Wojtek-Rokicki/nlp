@@ -11,6 +11,15 @@ Comparing BERT with modified LSTM
 - [ ] In [data_loading.py](src/data_loading.py) add loaders for datasets
 - [ ] Run LSTM on new dataset
 - [x] Implement BERT
-- [ ] Run BERT on new dataset
+- [x] Run BERT on new dataset
 - [ ] Modify BERT
+- [ ] Refactor code
+- [ ] Make argparse for LSTM, Roberta, BERT
 - [ ] ...
+
+# Notes:
+## LSTM types and number of parameters
+- LSTM_Layer: 250 114
+- LSTM_Single_Cell: 118 018 
+- LSTM_POS_Penn: 4 239 618
+- LSTM_POS_Universal: 1 531 138

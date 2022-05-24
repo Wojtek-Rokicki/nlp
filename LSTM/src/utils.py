@@ -54,6 +54,9 @@ class CustomRobertaDataset(Dataset):
         label = self.labels[idx]
         return text, label
 
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
 
 def get_model(selector, vocab_size, output_size, embedding_matrix, embedding_size, hidden_dim, device, drop_prob,
               tokenizer, seq_len, n_layers=2):
