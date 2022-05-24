@@ -1,0 +1,17 @@
+{
+    "dataset": [
+        "BBC_news"
+    ],
+    "sequence_length": [
+        10
+    ],
+    "learning_rate": [
+        0.001
+    ],
+    "epochs": [
+        5
+    ],
+    "batch_size": [
+        2
+    ]
+}

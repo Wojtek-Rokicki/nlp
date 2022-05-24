@@ -1,4 +1,5 @@
 .vscode/
 __pycache__
-LSTM/data/*
-LSTM/results/*
+data/
+weights/
+results/
