@@ -18,4 +18,9 @@ def single_run_bert(params):
     train_dataloader, val_dataloader, test_dataloader = bert.get_preprocessed_dataloaders(X, y, params)
     model = bert.BertClassifier()
     bert.train(model, train_dataloader, val_dataloader, params["learning_rate"], params["epochs"])
-    bert.evaluate(model, test_dataloader)
+    test_results = bert.evaluate(model, test_dataloader)
+    test_results = bert.add_parameters_to_test_results(
+            test_results, "BERT", params['sequence_length'], params['embedding_size'], 
+            params['learning_rate'], params['padding'], params['datasets']
+        )
+    return test_results

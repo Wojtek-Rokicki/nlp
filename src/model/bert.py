@@ -1,7 +1,6 @@
 
 import torch
 import torch.nn as nn
-
 from torch.optim import Adam
 
 from transformers import BertModel
@@ -11,9 +10,11 @@ import numpy as np
 import pandas as pd
 
 from tqdm import tqdm
+import logging
 
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 
 class BertClassifier(nn.Module):
 
@@ -132,21 +133,47 @@ def evaluate(model, test_dataloader):
 
         model = model.cuda()
 
-    total_acc_test = 0
+    test_lab_vec, test_pred_vec = [], []
     with torch.no_grad():
-
         for test_input, test_label in test_dataloader:
 
-              test_label = test_label.to(device)
-              mask = test_input['attention_mask'].to(device)
-              input_id = test_input['input_ids'].squeeze(1).to(device)
+            test_label = test_label.to(device)
+            mask = test_input['attention_mask'].to(device)
+            input_id = test_input['input_ids'].squeeze(1).to(device)
 
-              output = model(input_id, mask)
+            output = model(input_id, mask)
 
-              acc = (output.argmax(dim=1) == test_label).sum().item()
-              total_acc_test += acc
-    
-    print(f'Test Accuracy: {total_acc_test / len(test_dataloader.dataset): .3f}')
+            test_pred_vec.extend(list(output.argmax(dim=1)))
+            test_lab_vec.extend(list(test_label))
+
+    accuracy = accuracy_score(y_true=test_lab_vec, y_pred=test_pred_vec)
+    prec, rec, f1, _ = precision_recall_fscore_support(y_true=test_lab_vec, y_pred=test_pred_vec, beta=1,
+                                                        average='weighted')
+    logging.info(
+        f'\nAccuracy: {accuracy:.4f}'
+        f'\nAverage precision score: {prec:.4f}'
+        f'\nAverage recall score: {rec:0.4f}'
+        f'\nAverage f1-recall score: {f1:0.4f}'
+    )
+
+    return {
+        "accuracy": accuracy,
+        "precision": prec,
+        "recall": rec,
+        "f1": f1
+    }
+
+def add_parameters_to_test_results(test_results, model_name, sequence_length,
+                                   embedding_size, epochs, learning_rate, dataset):
+    test_results["model"] = model_name
+    test_results["sequence_length"] = sequence_length
+    test_results["embedding_size"] = embedding_size
+    test_results["epochs"] = epochs
+    test_results["learning_rate"] = learning_rate
+    test_results["dataset"] = dataset
+
+    return test_results
+
 
 def preprocess_text(X, y, params):
     """ Tokenizes texts and encodes labels.

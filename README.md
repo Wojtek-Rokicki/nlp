@@ -19,7 +19,8 @@ Resources for implementation:
 - [x] Add loaders for all datasets
 - [x] Implement BERT
 - [x] Test and run BERT
-- [ ] Code evaluation for BERT
+- [x] Code evaluation for BERT <- Needs to be checked
+- [ ] Add DistilBERT
 - [ ] Compare models
 - [ ] Refactor code
 - [ ] Make argparse for LSTM, Roberta, BERT
