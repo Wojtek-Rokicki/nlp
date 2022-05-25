@@ -1,9 +1,13 @@
 {
-    "dataset": [
-        "BBC_news"
+    "datasets": [
+        "sms_spam",
+        "disaster_tweets",
+        "emotions",
+        "imdb",
+        "bbc"
     ],
     "sequence_length": [
-        10
+        512
     ],
     "learning_rate": [
         0.001
@@ -13,5 +17,14 @@
     ],
     "batch_size": [
         2
+    ],
+    "train_ratio": [
+        0.7
+    ],
+    "val_ratio": [
+        0.1
+    ],
+    "test_ratio": [
+        0.2
     ]
 }

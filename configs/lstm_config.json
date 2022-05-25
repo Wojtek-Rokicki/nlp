@@ -1,5 +1,5 @@
 {
-  "dataset": [
+  "datasets": [
     "sms_spam",
     "disaster_tweets",
     "emotions",

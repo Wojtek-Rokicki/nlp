@@ -22,20 +22,20 @@ if __name__ == "__main__":
         #all_possible_params_roberta = json.load(roberta_fp)
 
     #LSTM
-    embeddings = get_embeddings() # Requires pretrained GloVe embeddings
-    for idx, single_params in enumerate(product(*all_possible_params_lstm.values())):
-        logging.info(f"Progress for lstm = {idx}/{len(list(product(*all_possible_params_lstm.values())))}")
-        single_params_dict = dict(zip(all_possible_params_lstm, single_params))
-        run_results = single_run_lstm(single_params_dict, embeddings) # runs for all possible models {LSTM_Layer, LSTM_Single_Cell, LSTM_POS_Penn, LSTM_POS_Universal}
-        results.extend(run_results)
+    # embeddings = get_embeddings() # Requires pretrained GloVe embeddings
+    # for idx, single_params in enumerate(product(*all_possible_params_lstm.values())):
+    #     logging.info(f"Progress for lstm = {idx}/{len(list(product(*all_possible_params_lstm.values())))}")
+    #     single_params_dict = dict(zip(all_possible_params_lstm, single_params))
+    #     run_results = single_run_lstm(single_params_dict, embeddings) # runs for all possible models {LSTM_Layer, LSTM_Single_Cell, LSTM_POS_Penn, LSTM_POS_Universal}
+    #     results.extend(run_results)
 
-    save_results_to_csv(results, 'lstm')
+    # save_results_to_csv(results, 'lstm')
 
     # BERT
-    # for idx, single_params in enumerate(product(*all_possible_params_bert.values())):
-    #     logging.info(f"Progress for BERT = {idx}/{len(list(product(*all_possible_params_bert.values())))}")
-    #     single_params_dict = dict(zip(all_possible_params_lstm, single_params))
-    #     single_run_bert(single_params_dict)
+    for idx, single_params in enumerate(product(*all_possible_params_bert.values())):
+        logging.info(f"Progress for BERT = {idx}/{len(list(product(*all_possible_params_bert.values())))}")
+        single_params_dict = dict(zip(all_possible_params_lstm, single_params))
+        single_run_bert(single_params_dict)
 
 
     # # RoBERTa

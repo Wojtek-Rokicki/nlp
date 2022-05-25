@@ -12,6 +12,9 @@ import pandas as pd
 
 from tqdm import tqdm
 
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+
 class BertClassifier(nn.Module):
 
     def __init__(self, dropout=0.5):
@@ -34,12 +37,9 @@ class BertClassifier(nn.Module):
 
 class Dataset(torch.utils.data.Dataset):
 
-    def __init__(self, df, labels, tokenizer):
-
-        self.labels = [labels[label] for label in df['category']]
-        self.texts = [tokenizer(text, 
-                               padding='max_length', max_length = 512, truncation=True,
-                                return_tensors="pt") for text in df['text']]
+    def __init__(self, texts, labels):
+        self.texts = texts
+        self.labels = labels
 
     def classes(self):
         return self.labels
@@ -148,29 +148,51 @@ def evaluate(model, test_dataloader):
     
     print(f'Test Accuracy: {total_acc_test / len(test_dataloader.dataset): .3f}')
 
-# Todo: generalize
-def get_preprocessed_dataloaders(dataset):
+def preprocess_text(X, y, params):
+    """ Tokenizes texts and encodes labels.
+
+    Returns:
+        texts:
+            List of sentences embeddings.
+        labels: 
+            List of numerically encoded labels of sentences.
+    """
     tokenizer = BertTokenizer.from_pretrained('bert-base-cased') # Maybe array for different BERTs
 
-    labels={
-        'business':0,
-        'entertainment':1,
-        'sport':2,
-        'tech':3,
-        'politics':4
-    }
+    label_encoder = preprocessing.LabelEncoder()
+    labels = label_encoder.fit_transform(y)
+    texts = [tokenizer(text, padding='max_length', max_length = params["sequence_length"], truncation=True, return_tensors="pt") for text in X]
+    return texts, labels
 
-    df = pd.read_csv('./data/datasets/bbc/bbc_articles.csv')
+def split_into_datasets(X, y, params):
+    """ Splits inputs and labels into train, validation and test subsets.
 
-    np.random.seed(112)
-    df_train, df_val, df_test = np.split(df.sample(frac=1, random_state=42), # mixes df and divides 0.8 0.1 0.1 
-                                     [int(.8*len(df)), int(.9*len(df))])
+        Splits dataset with ratios specified in params.
 
-    train, val, test = Dataset(df_train, labels, tokenizer), Dataset(df_val, labels, tokenizer), Dataset(df_test, labels, tokenizer)
+        Returns:
+            List of three Dataset objects of train, validation and test subsets.
+    """
 
-    train_dataloader = torch.utils.data.DataLoader(train, batch_size=2, shuffle=True)
-    val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
-    test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
+    x_train, x_test, y_train, y_test = train_test_split(X, y, train_size=params['train_ratio'], random_state=7)
+    split_idx = int(params['val_ratio'] / (params['val_ratio'] + params['test_ratio']) * len(x_test))
+    x_val, x_test, y_val, y_test = x_test[:split_idx], x_test[split_idx:], y_test[:split_idx], y_test[split_idx:]
+
+    return Dataset(x_train, y_train), Dataset(x_val, y_val), Dataset(x_test, y_test)
+
+def get_preprocessed_dataloaders(X, y, params):
+    """ Gets dataloaders of train, validation and test subsets.
+
+        Returns:
+            List of three DataLoaders objects of train, validation and test subsets.
+    """
+
+    texts, labels = preprocess_text(X, y, params)
+
+    train, val, test = split_into_datasets(texts, labels, params)
+
+    train_dataloader = torch.utils.data.DataLoader(train, batch_size=params["batch_size"], shuffle=True)
+    val_dataloader = torch.utils.data.DataLoader(val, batch_size=params["batch_size"])
+    test_dataloader = torch.utils.data.DataLoader(test, batch_size=params["batch_size"])
 
     return train_dataloader, val_dataloader, test_dataloader
 

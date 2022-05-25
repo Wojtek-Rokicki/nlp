@@ -13,10 +13,10 @@ Pretrained [glove word embeddings](https://nlp.stanford.edu/data/glove.6B.zip)
 Resources for implementation:
 - [Text Classification with BERT by Ruben Winastwan](https://towardsdatascience.com/text-classification-with-bert-in-pytorch-887965e5820f)
 
-## TODO:
+# TODO:
 - [x] Get familiar with the code!
 - [x] Test and run LSTM
-- [ ] Add loaders for all datasets
+- [x] Add loaders for all datasets
 - [x] Implement BERT
 - [x] Test and run BERT
 - [ ] Code evaluation for BERT

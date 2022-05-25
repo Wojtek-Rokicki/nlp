@@ -3,8 +3,9 @@ import os
 import pathlib
 
 import torch
-import src.model.bert as bert
 
+from src.data_loading import load_data
+import src.model.bert as bert
 
 def single_run_bert(params):
     data_root = os.path.join(pathlib.Path(__file__).parent.parent, 'data')
@@ -13,7 +14,8 @@ def single_run_bert(params):
     logging.info(
         f"Using parameters: sequence_length={params['sequence_length']} "
         f"epochs={params['epochs']} learning_rate={params['learning_rate']}")
-    train_dataloader, val_dataloader, test_dataloader = bert.get_preprocessed_dataloaders(params['dataset'])
+    X, y = load_data(data_root, params['datasets'])
+    train_dataloader, val_dataloader, test_dataloader = bert.get_preprocessed_dataloaders(X, y, params)
     model = bert.BertClassifier()
     bert.train(model, train_dataloader, val_dataloader, params["learning_rate"], params["epochs"])
     bert.evaluate(model, test_dataloader)

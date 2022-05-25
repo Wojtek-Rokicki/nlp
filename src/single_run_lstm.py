@@ -19,7 +19,7 @@ def single_run_lstm(params, embeddings):
     logging.info(
         f"Using parameters: sequence_length={params['sequence_length']} embedding_size={params['embedding_size']} "
         f"epochs={params['epochs']} learning_rate={params['learning_rate']} padding={params['padding']}")
-    X, y = load_data(data_root, params['dataset'])
+    X, y = load_data(data_root, params['datasets'])
     train_loader, val_loader, test_loader, tokenizer, output_size = prepare_data_loaders_and_tokenizer(X, y, params)
     embedding_matrix = get_embedding_vectors(tokenizer, params['embedding_size'], embeddings)
     vocab_size = len(tokenizer.word_index) + 1
@@ -41,7 +41,7 @@ def single_run_lstm(params, embeddings):
 
         test_results = add_parameters_to_test_results(
             test_results, model_name, params['sequence_length'], params['embedding_size'],
-            train_stats['epoch_min_loss'], params['learning_rate'], params['padding'], params['dataset']
+            train_stats['epoch_min_loss'], params['learning_rate'], params['padding'], params['datasets']
         )
 
         run_results.append(test_results)
