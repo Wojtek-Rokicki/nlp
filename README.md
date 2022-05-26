@@ -1,15 +1,15 @@
 # Natural Language Processing Project
-Comparing BERT with modified LSTMs
+Comparing BERTs with modified LSTMs
 
 # Remarks:
-## LSTMs & RoBERTa
+## LSTMs (& RoBERTa)
 Initial implementation was done by:
 - Adam Kapica
 - Piotr Kramek
 
 Pretrained [glove word embeddings](https://nlp.stanford.edu/data/glove.6B.zip)
 
-## BERT
+## BERT & DistilBERT
 Resources for implementation:
 - [Text Classification with BERT by Ruben Winastwan](https://towardsdatascience.com/text-classification-with-bert-in-pytorch-887965e5820f)
 
@@ -20,10 +20,11 @@ Resources for implementation:
 - [x] Implement BERT
 - [x] Test and run BERT
 - [x] Code evaluation for BERT
-- [ ] Add DistilBERT
-- [ ] Compare models
-- [ ] Refactor code
+- [x] Add DistilBERT
+- [x] Compare models
+- [ ] Saving model's weights
 - [ ] Make argparse for LSTM, Roberta, BERT
+- [ ] Refactor code
 
 # Notes:
 ## Prerequisities:
