@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 from torch.optim import Adam
 
-from transformers import BertModel
-from transformers import BertTokenizer
+from transformers import BertModel, DistilBertModel
+from transformers import BertTokenizer, DistilBertTokenizer
 
 import numpy as np
 import pandas as pd
@@ -30,6 +30,29 @@ class BertClassifier(nn.Module):
     def forward(self, input_id, mask):
 
         _, pooled_output = self.bert(input_ids= input_id, attention_mask=mask,return_dict=False)
+        dropout_output = self.dropout(pooled_output)
+        linear_output = self.linear(dropout_output)
+        final_layer = self.relu(linear_output)
+
+        return final_layer
+
+class DistilBertClassifier(nn.Module):
+
+    def __init__(self, dropout=0.5):
+
+        super(DistilBertClassifier, self).__init__()
+
+        self.bert = DistilBertModel.from_pretrained('distilbert-base-cased')
+        self.dropout = nn.Dropout(dropout)
+        self.linear = nn.Linear(768, 5)
+        self.relu = nn.ReLU()
+
+    def forward(self, input_id, mask):
+
+        outputs = self.bert(input_ids= input_id, attention_mask=mask,return_dict=True)
+        last_hidden_state = outputs[0]
+        pooled_output = last_hidden_state[:,0,:]
+        
         dropout_output = self.dropout(pooled_output)
         linear_output = self.linear(dropout_output)
         final_layer = self.relu(linear_output)
@@ -175,7 +198,7 @@ def add_parameters_to_test_results(test_results, model_name, sequence_length,
     return test_results
 
 
-def preprocess_text(X, y, params):
+def preprocess_text(X, y, params, bert_version):
     """ Tokenizes texts and encodes labels.
 
     Returns:
@@ -184,7 +207,11 @@ def preprocess_text(X, y, params):
         labels: 
             List of numerically encoded labels of sentences.
     """
-    tokenizer = BertTokenizer.from_pretrained('bert-base-cased') # Maybe array for different BERTs
+
+    if bert_version == "BERT":
+        tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
+    elif bert_version == "DistilBERT":
+        tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-cased')
 
     label_encoder = preprocessing.LabelEncoder()
     labels = label_encoder.fit_transform(y)
@@ -206,14 +233,14 @@ def split_into_datasets(X, y, params):
 
     return Dataset(x_train, y_train), Dataset(x_val, y_val), Dataset(x_test, y_test)
 
-def get_preprocessed_dataloaders(X, y, params):
+def get_preprocessed_dataloaders(X, y, params, bert_version):
     """ Gets dataloaders of train, validation and test subsets.
 
         Returns:
             List of three DataLoaders objects of train, validation and test subsets.
     """
 
-    texts, labels = preprocess_text(X, y, params)
+    texts, labels = preprocess_text(X, y, params, bert_version)
 
     train, val, test = split_into_datasets(texts, labels, params)
 

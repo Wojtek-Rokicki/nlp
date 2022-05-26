@@ -36,11 +36,22 @@ if __name__ == "__main__":
     for idx, single_params in enumerate(product(*all_possible_params_bert.values())):
         logging.info(f"Progress for BERT = {idx}/{len(list(product(*all_possible_params_bert.values())))}")
         single_params_dict = dict(zip(all_possible_params_bert, single_params))
-        run_results = single_run_bert(single_params_dict)
+        run_results = single_run_bert(single_params_dict, "BERT")
         results.extend(run_results)
 
 
     save_results_to_csv(results, 'bert')
+
+    # DistilBERT
+    results = []
+    for idx, single_params in enumerate(product(*all_possible_params_bert.values())):
+        logging.info(f"Progress for DistilBERT = {idx}/{len(list(product(*all_possible_params_bert.values())))}")
+        single_params_dict = dict(zip(all_possible_params_bert, single_params))
+        run_results = single_run_bert(single_params_dict, "DistilBERT")
+        results.extend(run_results)
+
+
+    save_results_to_csv(results, 'distilbert')
 
     # # RoBERTa
     # results = []
