@@ -12,7 +12,7 @@ def save_model(model):
     if repr(model) == "Roberta":
         model.save_weights()
     else:
-        with open('weights/model.pickle', 'wb+') as f:
+        with open('weights/model.pickle', 'wb') as f:
             pickle.dump(model, f)
 
 
