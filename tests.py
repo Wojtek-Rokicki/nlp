@@ -28,7 +28,7 @@ def bert_evaluation_test(params, data_root):
     return True
 
 if __name__ == "__main__":
-    data_root = os.path.join(pathlib.Path(__file__).parent.parent, 'nlp/data')
+    data_root = os.path.join(pathlib.Path(__file__).parent, 'data')
     f = open('configs/bert_config.json', 'r')
     params = json.load(f)
 
