@@ -19,7 +19,7 @@ Resources for implementation:
 - [x] Add loaders for all datasets
 - [x] Implement BERT
 - [x] Test and run BERT
-- [x] Code evaluation for BERT <- Needs to be checked
+- [x] Code evaluation for BERT
 - [ ] Add DistilBERT
 - [ ] Compare models
 - [ ] Refactor code
