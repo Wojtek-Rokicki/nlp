@@ -23,7 +23,7 @@ def single_run_bert(params, bert_version):
     bert.train(model, train_dataloader, val_dataloader, params["learning_rate"], params["epochs"])
     test_results = bert.evaluate(model, test_dataloader)
     test_results = bert.add_parameters_to_test_results(
-            test_results, bert_version, params['sequence_length'], 
-            params['learning_rate'], params['padding'], params['datasets']
+            test_results, bert_version, params['sequence_length'],
+            params['learning_rate'], params['datasets']
         )
     return test_results
