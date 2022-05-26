@@ -143,11 +143,11 @@ def evaluate(model, test_dataloader):
 
             output = model(input_id, mask)
 
-            test_pred_vec.extend(list(output.argmax(dim=1)))
-            test_lab_vec.extend(list(test_label))
+            test_pred_vec.extend(list(output.cpu().argmax(dim=1)))
+            test_lab_vec.extend(list(test_label.cpu()))
 
-    test_pred_vec = [x.numpy() for x in test_pred_vec]
-    test_lab_vec = [x.numpy() for x in test_lab_vec]
+    # test_pred_vec = [x.cpu().numpy() for x in test_pred_vec]
+    # test_lab_vec = [x.cpu().numpy() for x in test_lab_vec]
 
     accuracy = accuracy_score(y_true=test_lab_vec, y_pred=test_pred_vec)
     prec, rec, f1, _ = precision_recall_fscore_support(y_true=test_lab_vec, y_pred=test_pred_vec, beta=1,
