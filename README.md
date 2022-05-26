@@ -25,6 +25,9 @@ Resources for implementation:
 - [ ] Saving model's weights
 - [ ] Make argparse for LSTM, Roberta, BERT
 - [ ] Refactor code
+- [ ] Visualize results
+- [ ] Analyze and document results
+- [ ] Write report
 
 # Notes:
 ## Prerequisities:
