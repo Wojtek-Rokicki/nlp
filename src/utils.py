@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 from enum import Enum
 from typing import List, Dict
+from os.path import exists
 
 import numpy as np
 import pandas as pd
@@ -183,12 +184,16 @@ def add_parameters_to_test_results(test_results, model_name, sequence_length,
 
 
 def save_results_to_csv(results: List[Dict], filename):
-    current_date = datetime.now().strftime("%d.%m.%Y_%H:%M:%S")
+    current_date = datetime.now().strftime("%d.%m.%Y")
     filename = f"results/{filename}_{current_date}.csv"
-
     logging.info(f"Saving results in file: {filename}")
     df = pd.DataFrame(data=results)
-    df.to_csv(filename, index=False)
+    if exists(filename) == False:
+        df.to_csv(filename, index=False)
+    else:
+        df.to_csv(filename, mode='a', index=False, header=False)
+
+
 
 
 def exec_batch_roberta_model(inputs, device, model):
