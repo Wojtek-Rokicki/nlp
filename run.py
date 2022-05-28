@@ -30,6 +30,7 @@ def run_bert(all_possible_params_bert):
     for idx, single_params in enumerate(product(*all_possible_params_bert.values())):
         logging.info(f"Progress for BERT = {idx}/{len(list(product(*all_possible_params_bert.values())))}")
         single_params_dict = dict(zip(all_possible_params_bert, single_params))
+        print(f"all_possible_params_bert: {single_params_dict}")
         run_results = single_run_bert(single_params_dict, "BERT")
         results = []
         results.extend(run_results)
@@ -58,6 +59,6 @@ if __name__ == "__main__":
     run_bert(all_possible_params_bert)
     run_distil_bert(all_possible_params_bert)
     run_lstm(all_possible_params_lstm)
-    
+
     end = time.perf_counter()
     print(f"Exec time: {end - start}")

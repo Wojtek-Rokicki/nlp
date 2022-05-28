@@ -1,5 +1,9 @@
 {
   "datasets": [
+    "sms_spam",
+    "disaster_tweets",
+    "emotions",
+    "imdb",
     "bbc"
   ],
   "sequence_length": [

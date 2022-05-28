@@ -11,7 +11,7 @@ from src.train import train
 from src.utils import Selector, get_model, get_embedding_vectors, prepare_data_loaders_and_tokenizer, \
     add_parameters_to_test_results, count_parameters
 from src.utils import save_results_to_csv
-
+import time
 
 
 def single_run_lstm(params, embeddings, all_models=True, model_idx=0):
