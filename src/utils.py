@@ -182,6 +182,18 @@ def add_parameters_to_test_results(test_results, model_name, sequence_length,
 
     return test_results
 
+def add_parameters_to_test_results_BERT(test_results, model_name, sequence_length,
+                                   embedding_size, epochs, learning_rate, padding, dataset):
+    test_results["model"] = model_name
+    test_results["sequence_length"] = sequence_length
+    test_results["embedding_size"] = embedding_size
+    test_results["epochs"] = epochs
+    test_results["learning_rate"] = learning_rate
+    test_results["padding"] = padding
+    test_results["dataset"] = dataset
+
+    return test_results
+
 
 def save_results_to_csv(results: List[Dict], filename):
     current_date = datetime.now().strftime("%d.%m.%Y")
