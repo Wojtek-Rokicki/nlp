@@ -15,6 +15,7 @@ def single_run_bert(params, bert_version):
         f"Using parameters: sequence_length={params['sequence_length']} "
         f"epochs={params['epochs']} learning_rate={params['learning_rate']}")
     X, y = load_data(data_root, params['datasets'])
+    print(f"y: {y}")
     train_dataloader, val_dataloader, test_dataloader = bert.get_preprocessed_dataloaders(X, y, params, bert_version)
     if bert_version == "BERT":
         model = bert.BertClassifier()
