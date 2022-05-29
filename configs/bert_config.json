@@ -1,8 +1,8 @@
 {
     "datasets": [
+        "emotions",
         "sms_spam",
         "disaster_tweets",
-        "emotions",
         "imdb",
         "bbc"
     ],

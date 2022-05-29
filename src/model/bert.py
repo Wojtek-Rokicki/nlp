@@ -150,7 +150,7 @@ def train(model, train_dataloader, val_dataloader, learning_rate, epochs):
 def evaluate(model, test_dataloader):
 
     use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
+    device = torch.device("cuda:0" if use_cuda else "cpu")
 
     if use_cuda:
 
