@@ -45,7 +45,7 @@ class DistilBertClassifier(nn.Module):
 
         self.bert = DistilBertModel.from_pretrained('distilbert-base-cased')
         self.dropout = nn.Dropout(dropout)
-        self.linear = nn.Linear(768, 10)
+        self.linear = nn.Linear(768, 15)
         self.relu = nn.ReLU()
 
 
