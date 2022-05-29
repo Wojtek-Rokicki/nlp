@@ -60,9 +60,9 @@ if __name__ == "__main__":
         all_possible_params_lstm = json.load(lstm_fp)
         all_possible_params_bert = json.load(bert_fp)
     
-    run_bert(all_possible_params_bert)
-    run_distil_bert(all_possible_params_bert)
     run_lstm(all_possible_params_lstm)
+    run_distil_bert(all_possible_params_bert)
+    run_bert(all_possible_params_bert)
 
     end = time.perf_counter()
     print(f"Exec time: {end - start}")
