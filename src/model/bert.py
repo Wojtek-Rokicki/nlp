@@ -15,6 +15,7 @@ import logging
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
+import torch.nn.functional as F
 
 class BertClassifier(nn.Module):
 
@@ -44,8 +45,9 @@ class DistilBertClassifier(nn.Module):
 
         self.bert = DistilBertModel.from_pretrained('distilbert-base-cased')
         self.dropout = nn.Dropout(dropout)
-        self.linear = nn.Linear(768, 5)
+        self.linear = nn.Linear(768, 6)
         self.relu = nn.ReLU()
+
 
     def forward(self, input_id, mask):
 
@@ -56,8 +58,9 @@ class DistilBertClassifier(nn.Module):
         dropout_output = self.dropout(pooled_output)
         linear_output = self.linear(dropout_output)
         final_layer = self.relu(linear_output)
+        result = F.log_softmax(final_layer, dim = 1)
 
-        return final_layer
+        return result
 
 class Dataset(torch.utils.data.Dataset):
 
