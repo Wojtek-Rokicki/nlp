@@ -18,13 +18,13 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 
 class BertClassifier(nn.Module):
 
-    def __init__(self, dropout=0.5):
+    def __init__(self, unique_outputs, dropout=0.5):
 
         super(BertClassifier, self).__init__()
 
         self.bert = BertModel.from_pretrained('bert-base-cased')
         self.dropout = nn.Dropout(dropout)
-        self.linear = nn.Linear(768, 5)
+        self.linear = nn.Linear(768, unique_outputs)
         self.relu = nn.ReLU()
 
     def forward(self, input_id, mask):
@@ -38,13 +38,13 @@ class BertClassifier(nn.Module):
 
 class DistilBertClassifier(nn.Module):
 
-    def __init__(self, dropout=0.5):
+    def __init__(self, unique_outputs, dropout=0.5):
 
         super(DistilBertClassifier, self).__init__()
 
         self.bert = DistilBertModel.from_pretrained('distilbert-base-cased')
         self.dropout = nn.Dropout(dropout)
-        self.linear = nn.Linear(768, 5)
+        self.linear = nn.Linear(768, unique_outputs)
         self.relu = nn.ReLU()
 
     def forward(self, input_id, mask):
