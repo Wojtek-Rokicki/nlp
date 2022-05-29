@@ -28,6 +28,7 @@ if __name__ == "__main__":
         single_params_dict = dict(zip(all_possible_params_lstm, single_params))
         run_results = single_run_lstm(single_params_dict, embeddings) # runs for all possible models {LSTM_Layer, LSTM_Single_Cell, LSTM_POS_Penn, LSTM_POS_Universal}
         results.extend(run_results)
+        save_results_to_csv(results, 'lstm_' + str(idx))
 
     save_results_to_csv(results, 'lstm')
 
@@ -38,7 +39,7 @@ if __name__ == "__main__":
         single_params_dict = dict(zip(all_possible_params_bert, single_params))
         run_results = single_run_bert(single_params_dict, "BERT")
         results.extend(run_results)
-
+        save_results_to_csv(results, 'bert_' + str(idx))
 
     save_results_to_csv(results, 'bert')
 
@@ -49,7 +50,7 @@ if __name__ == "__main__":
         single_params_dict = dict(zip(all_possible_params_bert, single_params))
         run_results = single_run_bert(single_params_dict, "DistilBERT")
         results.extend(run_results)
-
+        save_results_to_csv(results, 'distilbert_' + str(idx))
 
     save_results_to_csv(results, 'distilbert')
 
