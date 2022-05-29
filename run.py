@@ -62,7 +62,7 @@ if __name__ == "__main__":
     
     run_bert(all_possible_params_bert)
     run_distil_bert(all_possible_params_bert)
-    run_lstm(all_possible_params_lstm)
+    # run_lstm(all_possible_params_lstm)
 
     end = time.perf_counter()
     print(f"Exec time: {end - start}")
