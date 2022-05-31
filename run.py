@@ -38,7 +38,7 @@ if __name__ == "__main__":
         logging.info(f"Progress for BERT = {idx}/{len(list(product(*all_possible_params_bert.values())))}")
         single_params_dict = dict(zip(all_possible_params_bert, single_params))
         run_results = single_run_bert(single_params_dict, "BERT")
-        results.extend(run_results)
+        results.append(run_results)
         save_results_to_csv(results, 'bert_' + str(idx))
 
     save_results_to_csv(results, 'bert')
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         logging.info(f"Progress for DistilBERT = {idx}/{len(list(product(*all_possible_params_bert.values())))}")
         single_params_dict = dict(zip(all_possible_params_bert, single_params))
         run_results = single_run_bert(single_params_dict, "DistilBERT")
-        results.extend(run_results)
+        results.append(run_results)
         save_results_to_csv(results, 'distilbert_' + str(idx))
 
     save_results_to_csv(results, 'distilbert')
