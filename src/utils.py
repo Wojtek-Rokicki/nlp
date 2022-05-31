@@ -183,7 +183,7 @@ def add_parameters_to_test_results(test_results, model_name, sequence_length,
 
 
 def save_results_to_csv(results: List[Dict], filename):
-    current_date = datetime.now().strftime("%d.%m.%Y_%H:%M:%S")
+    current_date = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
     filename = f"results/{filename}_{current_date}.csv"
 
     logging.info(f"Saving results in file: {filename}")
