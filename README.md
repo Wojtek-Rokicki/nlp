@@ -22,12 +22,9 @@ Resources for implementation:
 - [x] Code evaluation for BERT
 - [x] Add DistilBERT
 - [x] Compare models
-- [ ] Saving model's weights
-- [ ] Make argparse for LSTM, Roberta, BERT
-- [ ] Refactor code
-- [ ] Visualize results
-- [ ] Analyze and document results
-- [ ] Write report
+- [x] Refactor code
+- [x] Analyze and document results
+- [x] Write report
 
 # Notes:
 ## Prerequisities:
