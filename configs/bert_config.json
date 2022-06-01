@@ -3,7 +3,8 @@
         "sms_spam",
         "disaster_tweets",
         "imdb",
-        "bbc"
+        "bbc",
+        "emotions"
     ],
     "sequence_length": [
         512
