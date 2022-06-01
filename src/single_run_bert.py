@@ -16,10 +16,11 @@ def single_run_bert(params, bert_version):
         f"epochs={params['epochs']} learning_rate={params['learning_rate']}")
     X, y = load_data(data_root, params['datasets'])
     train_dataloader, val_dataloader, test_dataloader = bert.get_preprocessed_dataloaders(X, y, params, bert_version)
+    unique_outputs = len(set(y))
     if bert_version == "BERT":
-        model = bert.BertClassifier()
+        model = bert.BertClassifier(unique_outputs)
     elif bert_version == "DistilBERT":
-        model = bert.DistilBertClassifier()
+        model = bert.DistilBertClassifier(unique_outputs)
     bert.train(model, train_dataloader, val_dataloader, params["learning_rate"], params["epochs"])
     test_results = bert.evaluate(model, test_dataloader)
     test_results = bert.add_parameters_to_test_results(
