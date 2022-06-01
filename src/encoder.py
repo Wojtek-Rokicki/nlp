@@ -1,3 +1,5 @@
+"""File with class implementing Encoder
+"""
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 

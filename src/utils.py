@@ -1,3 +1,5 @@
+"""File with utilities functions
+"""
 import json
 import logging
 from datetime import datetime
@@ -20,6 +22,7 @@ from src.model.model import SpamClassifierLstmLayer, SpamClassifierSingleLstmCel
 
 
 class Selector(Enum):
+    '''Enum variable type for LSTM type'''
     LSTM_Layer = 0
     LSTM_Single_Cell = 1
     LSTM_POS_Penn = 2
@@ -27,6 +30,7 @@ class Selector(Enum):
 
 
 class IndexMapper:
+    '''Maps index to word in dictionary'''
     def __init__(self, tokenizer):
         self.dictionary = json.loads(tokenizer.get_config()['index_word'])
 
@@ -41,6 +45,7 @@ class IndexMapper:
 
 
 class CustomRobertaDataset(Dataset):
+    '''Prepare dataset for Roberta Model'''
     def __init__(self, corpus: List[str], labels: np.ndarray):
         super().__init__()
         self.corpus = corpus
@@ -56,11 +61,23 @@ class CustomRobertaDataset(Dataset):
         return text, label
 
 def count_parameters(model):
+    '''Counts parameters in model
+        Parameters
+        ----------
+        model : neural network model
+        
+        Returns
+        -------
+        int
+                number of parameters in model
+    '''
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 def get_model(selector, vocab_size, output_size, embedding_matrix, embedding_size, hidden_dim, device, drop_prob,
               tokenizer, seq_len, n_layers=2):
+    '''Returns LSTM model of specified type and parameters
+    '''
     if selector == Selector.LSTM_Layer:
         return SpamClassifierLstmLayer(vocab_size, output_size, embedding_matrix, embedding_size, hidden_dim, device,
                                        drop_prob, n_layers, seq_len)
@@ -79,6 +96,8 @@ def get_model(selector, vocab_size, output_size, embedding_matrix, embedding_siz
 
 
 def get_embedding_vectors(input_tokenizer, dim, embeddings):
+    '''Returns embedding matrix for specified tokenizer and embeddings
+    '''
     embedding_index = embeddings[dim]
 
     word_index = input_tokenizer.word_index
@@ -93,6 +112,8 @@ def get_embedding_vectors(input_tokenizer, dim, embeddings):
 
 
 def get_embeddings():
+    '''Returns glove data embeddings
+    '''
     return {
         50: load_glove_embedding_vec("data/", 50),
         100: load_glove_embedding_vec("data/", 100),
@@ -101,6 +122,8 @@ def get_embeddings():
 
 
 def text_preprocessing(params, X, y):
+    '''Preprocess text with selected in params mode, sequence length
+    '''
     encoder = Encoder()
     y_one_hot = encoder.fit_transform(y)
     output_size = len(y_one_hot[0])
@@ -121,6 +144,8 @@ def text_preprocessing(params, X, y):
 
 
 def roberta_text_preprocessing(params, X, y):
+    '''Preprocess text for Roberta
+    '''
     encoder = Encoder()
     y_one_hot = encoder.fit_transform(y)
     output_size = len(y_one_hot[0])
@@ -138,6 +163,8 @@ def roberta_text_preprocessing(params, X, y):
 
 
 def prepare_data_loaders_and_tokenizer(X, y, params, for_roberta=False):
+    '''Prepares data loader and tokenizer for passed data with specified params
+    '''
     if not for_roberta:
         X, y_one_hot, tokenizer, output_size = text_preprocessing(params, X, y)
     else:
@@ -166,12 +193,16 @@ def prepare_data_loaders_and_tokenizer(X, y, params, for_roberta=False):
 
 
 def get_one_hot_label(nn_output: List[float]):
+    '''Returns one hot label
+    '''
     one_hot = [1 if x == max(nn_output) else 0 for x in nn_output]
     return one_hot
 
 
 def add_parameters_to_test_results(test_results, model_name, sequence_length,
                                    embedding_size, epochs, learning_rate, padding, dataset):
+    '''Returns parameters to test results for LSTM model
+    '''
     test_results["model"] = model_name
     test_results["sequence_length"] = sequence_length
     test_results["embedding_size"] = embedding_size
@@ -184,6 +215,8 @@ def add_parameters_to_test_results(test_results, model_name, sequence_length,
 
 def add_parameters_to_test_results_BERT(test_results, model_name, sequence_length,
                                    embedding_size, epochs, learning_rate, padding, dataset):
+    '''Returns parameters to test results for BERT model
+    '''
     test_results["model"] = model_name
     test_results["sequence_length"] = sequence_length
     test_results["embedding_size"] = embedding_size
@@ -196,6 +229,8 @@ def add_parameters_to_test_results_BERT(test_results, model_name, sequence_lengt
 
 
 def save_results_to_csv(results: List[Dict], filename):
+    '''Saves results to csv file with passed name
+    '''
     current_date = datetime.now().strftime("%d.%m.%Y")
     filename = f"results/{filename}_{current_date}.csv"
     logging.info(f"Saving results in file: {filename}")
@@ -209,6 +244,8 @@ def save_results_to_csv(results: List[Dict], filename):
 
 
 def exec_batch_roberta_model(inputs, device, model):
+    '''Saves results to csv file with passed name
+    '''
     model.zero_grad()
 
     features = [model.get_roberta_predictions(model.encode(sample)).to(device)[:, 0, :] for sample in inputs]
@@ -219,6 +256,8 @@ def exec_batch_roberta_model(inputs, device, model):
 
 
 def exec_batch_lstm_models(inputs, device, model):
+    '''Execute lstm model for passed input, returns output
+    '''
     hidden = model.init_hidden(len(inputs))
     hidden = tuple([e.data for e in hidden])
     inputs = inputs.to(device)

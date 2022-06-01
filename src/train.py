@@ -1,3 +1,5 @@
+"""File with train function
+"""
 import logging
 import pickle
 
@@ -9,6 +11,13 @@ from src.utils import exec_batch_roberta_model, exec_batch_lstm_models
 
 
 def save_model(model):
+    '''Saving model
+
+       Parameters
+       ----------
+       model : 
+                model that will be saved
+    '''
     if repr(model) == "Roberta":
         model.save_weights()
     else:
@@ -17,6 +26,29 @@ def save_model(model):
 
 
 def train(model, epochs, train_loader, val_loader, device, optimizer, criterion, clip=None):
+    '''Training model and loging informatio about training
+
+       Parameters
+       ----------
+        epoch : int
+                number of epochs training will take
+        train_loader : 
+                data loader for training data
+        val_loader :
+                data loader for validation data
+        device :
+                device on which model will be train
+        optimizer :
+                optimizer 
+        criterion :
+                criterion for loss function
+
+        Returns
+       -------
+       dictionary
+            epoch min loss
+        
+    '''
     model.to(device)
     epoch_min_loss, min_loss_val_ds, loaders = None, np.inf, {'train': train_loader, 'val': val_loader}
     for epoch in tqdm(range(1, epochs + 1)):

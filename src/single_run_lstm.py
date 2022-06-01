@@ -1,3 +1,5 @@
+"""File with function that runs lstm model
+"""
 import logging
 import os
 import pathlib
@@ -15,6 +17,29 @@ import time
 
 
 def single_run_lstm(params, embeddings, all_models=True, model_idx=0):
+    """Runing lstm model
+
+        Parameters
+       ----------
+       params : dictionary
+            parameters for running model: 
+                    epochs, learning rate, hidden layers dimension, 
+                    sequence length,  dataset
+        embeddings :
+            embeddings
+
+        all_models : 
+            flag telling if all possibel lstm models will be run
+        
+        model_idx :
+                index of lstm model, specified if all_model is False
+                 and only one lstm model type will be run
+    
+       Returns
+       -------
+       List[dictionary]
+            run results
+    """
     data_root = os.path.join(pathlib.Path(__file__).parent.parent, 'data')
     device = "cuda" if torch.cuda.is_available() else 'cpu'
     logging.info(f"Using device: {device}")
@@ -46,6 +71,36 @@ def single_run_lstm(params, embeddings, all_models=True, model_idx=0):
     return run_results
 
 def single_model_lstm_run(model_idx, data_root, device, train_loader, val_loader, test_loader, tokenizer, output_size, embedding_matrix, vocab_size, params):
+    """Runing one lstm model
+
+        Parameters
+       ----------
+        model_idx : model_idx
+            index of lstm model type
+        data_root :
+            data root
+        device : 
+            device on which model will be run 
+        train_loader, val_loader, test_loader  :
+            data loader for training, validation and testing data
+        tokenizer :
+            tokenizer for tokenize dataset words
+        output_size :
+            size of output
+        embedding_matrix :
+            matrix for calculationg embeddings
+        vocab_size :
+            size of vocabulary dictionary
+        params :
+            parameters for running model: 
+                    epochs, learning rate, hidden layers dimension, 
+                    sequence length,  dataset
+    
+       Returns
+       -------
+       List[dictionary]
+            run results
+    """
     model_name = Selector(model_idx).name
     logging.info(f"name of the model: {model_name}")
 

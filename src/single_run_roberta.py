@@ -1,3 +1,5 @@
+"""File with function that runs roberta model
+"""
 import logging
 import os
 import pathlib
@@ -13,6 +15,22 @@ from src.utils import prepare_data_loaders_and_tokenizer, add_parameters_to_test
 
 
 def single_run_roberta(params):
+    """Runing roberta model
+
+        Parameters
+       ----------
+       params : dictionary
+            parameters for running model: 
+                    epochs, learning rate, hidden layers dimension, 
+                    sequence length,  dataset
+    
+       Returns
+       -------
+       List[dictionary]
+            test results :
+                sequence length, epoch minimal loss, 
+                learning rate, dataset
+    """
     data_root = os.path.join(pathlib.Path(__file__).parent.parent, 'data')
     device = "cuda" if torch.cuda.is_available() else 'cpu'
     logging.info(f"Using device: {device}")

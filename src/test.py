@@ -1,3 +1,5 @@
+"""File with model testing function
+"""
 import logging
 import pickle
 
@@ -8,6 +10,25 @@ from src.utils import get_one_hot_label, exec_batch_roberta_model, exec_batch_ls
 
 
 def test(model, test_loader, device, criterion):
+    '''Testing model and loging information about testing
+
+       Parameters
+       ----------
+        model : 
+                neural network model
+        test_loader : 
+                data loader for testing data
+        device :
+                device on which model will be train
+        criterion :
+                criterion for loss function
+
+        Returns
+       -------
+       dictionary
+                accuracy, prec, rec, f1, test_loss
+        
+    '''
     if repr(model) == "Roberta":
         model.load_weights()
     else:

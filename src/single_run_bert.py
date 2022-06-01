@@ -1,3 +1,5 @@
+"""File with function that runs lstm model
+"""
 import logging
 import os
 import pathlib
@@ -8,6 +10,22 @@ from src.data_loading import load_data
 import src.model.bert as bert
 
 def single_run_bert(params, bert_version):
+    """Runing bert model
+
+        Parameters
+       ----------
+       params : dictionary
+            parameters for running model: 
+                    epochs, learning rate, hidden layers dimension, 
+                    sequence length,  dataset
+        bert version : string
+                version of bert model: 'BERT' or 'DistilBERT'
+    
+       Returns
+       -------
+       List[dictionary]
+            run results
+    """
     data_root = os.path.join(pathlib.Path(__file__).parent.parent, 'data')
     device = "cuda" if torch.cuda.is_available() else 'cpu'
     logging.info(f"Using device: {device}")
